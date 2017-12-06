@@ -1,7 +1,6 @@
 package domin;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 public class Students {
     private int id;
@@ -9,18 +8,22 @@ public class Students {
     private String sex;
 
     public int getId() {
+
         return id;
     }
 
     public void setId(int id) {
+
         this.id = id;
     }
 
     public String getSex() {
+
         return sex;
     }
 
     public void setSex(String sex) {
+
         this.sex = sex;
     }
 
@@ -28,10 +31,12 @@ public class Students {
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 

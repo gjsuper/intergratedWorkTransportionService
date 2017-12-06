@@ -8,5 +8,5 @@ import java.util.List;
 public interface SqlMapper {
 
     @Select("select * from students")
-    public List<Students> getAllStudents();
+    List<Students> getAllStudents();
 }
