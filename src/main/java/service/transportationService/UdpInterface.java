@@ -10,7 +10,7 @@ import java.net.*;
 @Service
 class UdpInterface implements InitializingBean {
 
-    @Value("#{netProp['port']}")
+    @Value("#{properties['port']}")
     private int port;
 
     private DatagramSocket sock;

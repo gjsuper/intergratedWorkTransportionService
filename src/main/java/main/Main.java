@@ -1,7 +1,6 @@
 package main;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import service.transportationService.TransportationService;
 
 public class Main {
 

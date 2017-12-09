@@ -6,15 +6,16 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:component-scan base-package="service.sqlService, service.transportationService"/>
+    <context:component-scan base-package="service"/>
 
     <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
 
-    <bean id="netProp" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>
                 <value>classpath:net.properties</value>
                 <value>classpath:jdbc.properties</value>
+                <value>classpath:kafka.properties</value>
             </list>
         </property>
     </bean>
@@ -22,7 +23,7 @@
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" id="propertyConfigurer">
         <property name="ignoreResourceNotFound" value="true" />
         <property name="ignoreUnresolvablePlaceholders" value="true" />
-        <property name="properties" ref="netProp"/>
+        <property name="properties" ref="properties"/>
     </bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -38,7 +39,7 @@
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="mapper"/>
+        <property name="basePackage" value="sqlMapper"/>
     </bean>
 
 </beans> 
