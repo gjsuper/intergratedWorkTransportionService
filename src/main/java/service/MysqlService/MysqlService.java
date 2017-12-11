@@ -1,19 +1,14 @@
 package service.MysqlService;
 
 import sqlMapper.StudentsMapper;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
-public class MysqlService implements InitializingBean {
+public class MysqlService {
 
     @SuppressWarnings({"SpringJavaAutowiringInspection", "SpringAutowiredFieldsWarningInspection"})
-    @Autowired
+    @Resource
     private StudentsMapper sqlMapper;
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println(sqlMapper.getAllStudents());
-    }
 }

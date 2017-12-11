@@ -5,7 +5,24 @@ import com.google.common.base.MoreObjects;
 public class Students {
     private int id;
     private String name;
-    private String sex;
+    private String password;
+    private String extendInfo;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getExtendInfo() {
+        return extendInfo;
+    }
+
+    public void setExtendInfo(String extendInfo) {
+        this.extendInfo = extendInfo;
+    }
 
     public int getId() {
 
@@ -15,16 +32,6 @@ public class Students {
     public void setId(int id) {
 
         this.id = id;
-    }
-
-    public String getSex() {
-
-        return sex;
-    }
-
-    public void setSex(String sex) {
-
-        this.sex = sex;
     }
 
     public Students() {
@@ -43,7 +50,8 @@ public class Students {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("id", id).
-                add("name", name).add("sex", sex).toString();
+                add("name", name).add("password", password).
+                add("extendInfo", extendInfo).toString();
     }
 
 }

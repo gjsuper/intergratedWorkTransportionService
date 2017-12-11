@@ -51,11 +51,11 @@ public class MyKafkaProducer implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println(keyDeserializer);
         producer = createProducer();
     }
 
     private String generateKey() {
+
         return "" + random.nextInt(Integer.MAX_VALUE);
     }
 

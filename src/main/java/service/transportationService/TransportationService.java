@@ -42,7 +42,7 @@ public class TransportationService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        /*String str = "hello";
+        /*String str = "hello1";
         System.out.println("send:" + str + ", ip:" + ip + ", port:" + port);
         udpInterface.send(ip, port, str.getBytes());*/
 

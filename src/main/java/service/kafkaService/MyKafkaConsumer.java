@@ -58,7 +58,6 @@ public class MyKafkaConsumer implements InitializingBean {
 
             int count = 0;
 
-
             while (true) {
                 ConsumerRecords<String, Object> records = consumer.poll(pollTimeout);
 

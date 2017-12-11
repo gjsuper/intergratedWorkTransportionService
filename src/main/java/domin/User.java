@@ -2,11 +2,22 @@ package domin;
 
 import com.google.common.base.MoreObjects;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int id;
-    private String userName;
+    private String username;
     private String password;
+    private String extendInfo;
+
+    public String getExtendInfo() {
+        return extendInfo;
+    }
+
+    public void setExtendInfo(String extendInfo) {
+        this.extendInfo = extendInfo;
+    }
 
     public int getId() {
         return id;
@@ -16,12 +27,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -36,8 +47,9 @@ public class User {
     public String toString() {
         return MoreObjects.toStringHelper(this).
                 add("id", id).
-                add("username", userName).
+                add("username", username).
                 add("password", password).
+                add("extendInfo", extendInfo).
                 toString();
     }
 }
