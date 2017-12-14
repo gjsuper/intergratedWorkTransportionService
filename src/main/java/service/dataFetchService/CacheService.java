@@ -15,21 +15,23 @@ public class CacheService implements InitializingBean {
     @Resource
     private RedisClusterUtils redisClusterUtils;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Resource
     private UserMapper userMapper;
 
+    //先从缓存去数据，如果没取到再从数据库取数据，然后在把数据放到缓存
     public User getUser(String username) {
-//        //先从缓存去数据，如果没取到再从数据库取数据，然后在把数据放到缓存
         byte[] value = redisClusterUtils.get(username.getBytes());
         User user;
 
+        //如果从redis取到数据了
         if (value != null) {
             Object o = SerializeUtil.deserialize(value);
 
             if (o instanceof User) {
                 return (User) o;
             }
-        } else {
+        } else {//如果没有取到，则从数据库取数据
             user = userMapper.getUserByUsername(username);
             if (user != null) {
                 redisClusterUtils.set(username, user);
@@ -43,13 +45,13 @@ public class CacheService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         User user = new User();
 
-        user.setUsername("jie3");
-        user.setPassword("123456");
-        user.setExtendInfo("extend info");
+//        user.setUsername("jie3");
+//        user.setPassword("123456");
+//        user.setExtendInfo("extend info");
+////h
+////        redisClusterUtils.set("jie", user);
 //
-//        redisClusterUtils.set("jie", user);
-
-        userMapper.addUser(user);
+//        userMapper.addUser(user);
         System.out.println(user.getId());
         System.out.println(getUser("jie3"));
 

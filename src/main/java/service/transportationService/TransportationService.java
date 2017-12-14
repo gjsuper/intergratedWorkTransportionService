@@ -42,9 +42,9 @@ public class TransportationService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        /*String str = "hello1";
+        String str = "hello111";
         System.out.println("send:" + str + ", ip:" + ip + ", port:" + port);
-        udpInterface.send(ip, port, str.getBytes());*/
+        udpInterface.send(ip, port, str.getBytes());
 
         while (true) {
 
@@ -55,7 +55,7 @@ public class TransportationService implements InitializingBean {
                 continue;
             }
 
-            myKafkaProducer.sendMessage(new KafkaDataStruct(dp.getData(), dp.getLength()));
+            myKafkaProducer.sendMessage(new KafkaDataStruct(dp.getData(), dp.getLength(), dp.getAddress().getHostAddress(), dp.getPort()));
 
 //            byte[] recvBuf = dp.getData();
 //

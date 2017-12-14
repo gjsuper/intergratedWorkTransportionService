@@ -9,7 +9,30 @@ public class User implements Serializable {
     private int id;
     private String username;
     private String password;
+    private int status;//0-不在线，1-在线
     private String extendInfo;
+    private String ip;
+    private int port;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getStatus() { return status; }
+
+    public void setStatus(int status) { this.status = status; }
 
     public String getExtendInfo() {
         return extendInfo;
@@ -31,9 +54,7 @@ public class User implements Serializable {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 
     public String getPassword() {
         return password;

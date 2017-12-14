@@ -1,13 +1,18 @@
 package service.kafkaService;
 
+import domin.ConstantField;
 import domin.KafkaDataStruct;
+import domin.ShortMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import service.shortMessageService.ShortMessageService;
+import service.userService.UserService;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Service
@@ -43,6 +48,12 @@ public class MyKafkaConsumer implements InitializingBean {
     @Value("#{properties['minBatchSize']}")
     private int minBatchSize;
 
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ShortMessageService shortMessageService;
+
     @Override
     public void afterPropertiesSet() {
         new Thread(new MyConsumer()).start();
@@ -67,10 +78,16 @@ public class MyKafkaConsumer implements InitializingBean {
                     if(o instanceof  KafkaDataStruct) {
                         KafkaDataStruct kafkaDataStruct = (KafkaDataStruct) o;
                         byte[] data = kafkaDataStruct.getData();
-                        int len = kafkaDataStruct.getLen();
+//                        int len = kafkaDataStruct.getLen();
+//
+//                        for (int i = 0; i < len; ++i) {
+//                            System.out.print(Integer.toHexString(data[i] & 0xFF) + " ");
+//                        }
 
-                        for (int i = 0; i < len; ++i) {
-                            System.out.print(Integer.toHexString(data[i] & 0xFF) + " ");
+                        if(data[0] == ConstantField.USER_SIGNAL) {
+                            userService.dealUserData(kafkaDataStruct);
+                        } if(data[0] ==ConstantField.DATA_SIGNAL) {
+                            shortMessageService.dealShortMessage(kafkaDataStruct);
                         }
 
                         count ++;

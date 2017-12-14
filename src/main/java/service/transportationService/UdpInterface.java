@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.*;
 
 @Service
-class UdpInterface implements InitializingBean {
+public class UdpInterface implements InitializingBean {
 
     @Value("#{properties['port']}")
     private int port;
@@ -18,7 +18,7 @@ class UdpInterface implements InitializingBean {
     private byte[] recvBuf = new byte[1024 * 10];
     private DatagramPacket dp = new DatagramPacket(recvBuf, recvBuf.length);
 
-    void send(String ip, int port, byte[] data) {
+    public void send(String ip, int port, byte[] data) {
         try {
             DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(ip), port);
             sock.send(packet);

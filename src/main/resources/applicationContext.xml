@@ -17,6 +17,7 @@
                 <value>classpath:jdbc.properties</value>
                 <value>classpath:kafka.properties</value>
                 <value>classpath:redis.properties</value>
+                <value>classpath:ipServer.properties</value>
             </list>
         </property>
     </bean>
