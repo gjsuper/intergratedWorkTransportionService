@@ -5,8 +5,8 @@ public class ConstantField {
     //信令类型
     public static byte USER_SIGNAL = 0x00;
     public static byte DATA_SIGNAL = 0x01;
-    public static byte STORE_SIGNAL = 0x02;
-    public static byte QUERY_SIGNAL = 0x03;
+    public static byte STORE_QUERY_UPDATE_SIGNAL = 0x02;
+
 
     //用户信令
     public static byte USER_REGISTER_REQUEST = 0x00;
@@ -46,5 +46,24 @@ public class ConstantField {
     public static byte SM_QUERY_USER = 0x03;
     public static byte SM_QUERY_RESPONSE = 0x04;
 
+    //存储，查询，更新
+    public static byte STORAGE_REQUEST = 0x00;
+    public static byte STORAGE_RESPONSE = 0x01;
+    public static byte QUERY_REQUEST = 0x02;
+    public static byte QUERY_RESPONSE = 0x03;
+    public static byte UPDATE_REQUEST = 0x04;
+    public static byte UPDATE_RESPONSE = 0x05;
+
+    //存储
+    public static byte STORE_SUCCESS = 0x00;
+    public static byte STORE_KEY_EXISTS = 0x01;
+
+    //查询
+    public static byte QUERY_SUCCESS = 0x00;
+    public static byte QUERY_KEY_NOT_EXISTS = 0x01;
+
+    //更新
+    public static byte UPDATE_SUCCESS = 0x00;
+    public static byte UPDATE_KEY_NOT_EXISTS = 0x01;
 
 }

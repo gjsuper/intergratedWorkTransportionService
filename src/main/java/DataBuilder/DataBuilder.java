@@ -94,6 +94,7 @@ public class DataBuilder {
         return byteBuffer.array();
     }
 
+    //短消息查询
     public static byte[] buildQuerySMResponse(List<String> messages) {
 
         int len = messages.stream().map(String::getBytes).map(x -> x.length).reduce(0, Integer::sum);
@@ -116,6 +117,88 @@ public class DataBuilder {
             byteBuffer.putInt(message.getBytes().length);
             byteBuffer.put(message.getBytes());
         }
+
+        return byteBuffer.array();
+    }
+
+    /*
+     * 数据存储响应
+     */
+    public static byte[] buildStorageResponse(byte result) {
+
+        int len = 1 + 1 + 1;//信令类型(1) + 包类型(1) + 结果(1)
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(len);
+
+        //信令类型
+        byteBuffer.put(ConstantField.STORE_QUERY_UPDATE_SIGNAL);
+
+        //包类型
+        byteBuffer.put(ConstantField.STORAGE_RESPONSE);
+
+        //结果
+        byteBuffer.put(result);
+
+        return byteBuffer.array();
+    }
+
+    /*
+     * 数据查询响应
+     */
+    public static byte[] buildQueryResponse(byte result, String key, String value) {
+
+        byte[] b_key = key.getBytes();
+        byte keyLen = (byte) b_key.length;
+
+        byte[] b_value = value.getBytes();
+        Short valueLen = (short)b_value.length;
+
+
+        int len = 1 + 1 + 1 + 1 + keyLen + 2 + valueLen;//信令类型(1) + 包类型(1) + 结果(1) + key长度(1) + key + value长度(2) + value
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(len);
+
+        //信令类型
+        byteBuffer.put(ConstantField.STORE_QUERY_UPDATE_SIGNAL);
+
+        //包类型
+        byteBuffer.put(ConstantField.QUERY_RESPONSE);
+
+        //结果
+        byteBuffer.put(result);
+
+        //key长度
+        byteBuffer.put(keyLen);
+
+        //key
+        byteBuffer.put(b_key);
+
+        //value长度
+        byteBuffer.putShort(valueLen);
+
+        //value
+        byteBuffer.put(b_value);
+
+        return byteBuffer.array();
+    }
+
+    /*
+    * 数据更新响应
+    */
+    public static byte[] buildUpdateResponse(byte result) {
+
+        int len = 1 + 1 + 1;//信令类型(1) + 包类型(1) + 结果(1)
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(len);
+
+        //信令类型
+        byteBuffer.put(ConstantField.STORE_QUERY_UPDATE_SIGNAL);
+
+        //包类型
+        byteBuffer.put(ConstantField.UPDATE_RESPONSE);
+
+        //结果
+        byteBuffer.put(result);
 
         return byteBuffer.array();
     }

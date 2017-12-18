@@ -1,4 +1,4 @@
-package service.shortMessageService;
+package service.dataService;
 
 import DataBuilder.DataBuilder;
 import domin.ConstantField;
@@ -30,7 +30,7 @@ public class ShortMessageService {
     @Resource
     private UdpInterface udpInterface;
 
-    public void dealShortMessage(KafkaDataStruct kafkaDataStruct) {
+     void dealShortMessage(KafkaDataStruct kafkaDataStruct) {
         byte[] bytes = kafkaDataStruct.getData();
 
         if(bytes[2] == ConstantField.IP_TYPE) {
@@ -52,7 +52,7 @@ public class ShortMessageService {
 
         index += 4;
         //dstport
-        short dstPort = 0;
+        short dstPort;
         dstPort = (short) (data[index ++] & 0xFF);
         dstPort += (short) (data[index ++] & 0xFF);
 
@@ -62,7 +62,7 @@ public class ShortMessageService {
         index += 4;
 
         //srcport
-        short srcPort = 0;
+        short srcPort;
         srcPort = (short) (data[index ++] & 0xFF);
         srcPort += (short) (data[index ++] & 0xFF);
 
@@ -168,7 +168,7 @@ public class ShortMessageService {
             src = Arrays.toString(Arrays.copyOfRange(data, index, index + srcUsernameLen));
         }
 
-        List<String> sms = null;
+        List<String> sms;
 
         if(status == ConstantField.UNREADED || status == ConstantField.READED) {
             sms = shortMessageMapper.getMessgesByStatus(src, dst, status);

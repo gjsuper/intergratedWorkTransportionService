@@ -2,14 +2,14 @@ package service.kafkaService;
 
 import domin.ConstantField;
 import domin.KafkaDataStruct;
-import domin.ShortMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import service.shortMessageService.ShortMessageService;
+import service.dataService.DataService;
+import service.storageQueryUpdateService.StoreQueryUpdateService;
 import service.userService.UserService;
 
 import javax.annotation.Resource;
@@ -52,7 +52,10 @@ public class MyKafkaConsumer implements InitializingBean {
     private UserService userService;
 
     @Resource
-    private ShortMessageService shortMessageService;
+    private DataService dataService;
+
+    @Resource
+    private StoreQueryUpdateService storeQueryUpdateService;
 
     @Override
     public void afterPropertiesSet() {
@@ -86,8 +89,10 @@ public class MyKafkaConsumer implements InitializingBean {
 
                         if(data[0] == ConstantField.USER_SIGNAL) {
                             userService.dealUserData(kafkaDataStruct);
-                        } if(data[0] ==ConstantField.DATA_SIGNAL) {
-                            shortMessageService.dealShortMessage(kafkaDataStruct);
+                        } else if(data[0] == ConstantField.DATA_SIGNAL) {
+                            dataService.dealData(kafkaDataStruct);
+                        } else if(data[0] == ConstantField.STORE_QUERY_UPDATE_SIGNAL) {
+                            storeQueryUpdateService.dealStoreQueryUpdate(kafkaDataStruct);
                         }
 
                         count ++;

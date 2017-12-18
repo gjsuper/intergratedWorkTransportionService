@@ -8,7 +8,6 @@ import redis.clients.jedis.JedisCluster;
 import service.serializeService.SerializeUtil;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
