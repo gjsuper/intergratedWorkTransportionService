@@ -18,7 +18,7 @@ public class UdpInterface implements InitializingBean {
     private byte[] recvBuf = new byte[1024 * 10];
     private DatagramPacket dp = new DatagramPacket(recvBuf, recvBuf.length);
 
-    public void send(String ip, int port, byte[] data) {
+    public void sendData(byte[] data, String ip, int port) {
         try {
             DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(ip), port);
             sock.send(packet);

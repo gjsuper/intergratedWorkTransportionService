@@ -3,7 +3,6 @@ package service.redisService;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisCluster;
 import service.serializeService.SerializeUtil;
 
@@ -20,8 +19,18 @@ public class RedisClusterUtils implements InitializingBean {
      * 得到指定key值的value
      * @param key
      */
-    public Object get(String key){
+    public Object getBytes(String key){
         return jedisCluster.get(key);
+    }
+
+    public int getInt(String key) {
+        String o = jedisCluster.get(key);
+
+        if(o == null) {
+            return -1;
+        }
+
+        return Integer.parseInt(o);
     }
 
     /**
@@ -29,7 +38,7 @@ public class RedisClusterUtils implements InitializingBean {
      * @param key
      * @param value
      */
-    public void set(String key, String value){
+    public void setObject(String key, String value){
         jedisCluster.set(key, value);
     }
 
@@ -38,7 +47,7 @@ public class RedisClusterUtils implements InitializingBean {
      * @param key
      * @param list
      */
-    public void set(String key, List<String> list){
+    public void setObject(String key, List<String> list){
         jedisCluster.rpush(key, (String[]) list.toArray());
     }
 
@@ -48,20 +57,25 @@ public class RedisClusterUtils implements InitializingBean {
      * @param key
      * @param object
      */
-    public void set(String key, Object object) {
-        set(key, SerializeUtil.serialize(object));
+    public void setObject(String key, Object object) {
+        setObject(key, SerializeUtil.serialize(object));
     }
 
-    public void set(String key, byte[] bytes){
+    public void setInt(String key, int value) {
+        jedisCluster.set(key, "" + value);
+    }
+
+    public void setObject(String key, byte[] bytes){
         jedisCluster.set(key.getBytes(), bytes);
     }
 
     /**
      * 将序列化的对象取出来
+     *
      * @param bytes
      * @return byte[]
      */
-    public byte[] get(byte[] bytes) {
+    public byte[] getBytes(byte[] bytes) {
         return jedisCluster.get(bytes);
     }
 
@@ -75,6 +89,6 @@ public class RedisClusterUtils implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("redis get:" + jedisCluster.get("f") + "," + jedisCluster.getClusterNodes());
+        System.out.println("redis getBytes:" + jedisCluster.get("f") + "," + jedisCluster.getClusterNodes());
     }
 }

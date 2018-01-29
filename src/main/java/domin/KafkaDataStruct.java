@@ -30,9 +30,7 @@ public class KafkaDataStruct implements Serializable {
         this.ip = ip;
     }
 
-    public int getPort() {
-        return port;
-    }
+    public int getPort() { return port; }
 
     public void setPort(int port) {
         this.port = port;

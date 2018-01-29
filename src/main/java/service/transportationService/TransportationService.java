@@ -42,26 +42,29 @@ public class TransportationService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        String str = "hello111";
-        System.out.println("send:" + str + ", ip:" + ip + ", port:" + port);
-        udpInterface.send(ip, port, str.getBytes());
+//        String str = "hello111";
+//        System.out.println("sendData:" + str + ", ip:" + ip + ", port:" + port);
+//        udpInterface.sendData(str.getBytes(), ip, port);
 
-        while (true) {
+        new Thread(() -> {
+            while (true) {
 
-            DatagramPacket dp = udpInterface.recv();
+                DatagramPacket dp = udpInterface.recv();
 
-            if(dp == null) {
-                System.err.println("received datagram Packet == null");
-                continue;
-            }
+                if(dp == null) {
+                    System.err.println("received datagram Packet == null");
+                    continue;
+                }
 
-            myKafkaProducer.sendMessage(new KafkaDataStruct(dp.getData(), dp.getLength(), dp.getAddress().getHostAddress(), dp.getPort()));
+                myKafkaProducer.sendMessage(new KafkaDataStruct(dp.getData(), dp.getLength(), dp.getAddress().getHostAddress(), dp.getPort()));
 
 //            byte[] recvBuf = dp.getData();
 //
 //            for (int i = 0; i < dp.getLength(); ++i) {
 //                System.out.print(Integer.toHexString(recvBuf[i] & 0xFF) + " ");
 //            }
-        }
+            }
+        });
+
     }
 }

@@ -1,19 +1,19 @@
 package service.kafkaService;
 
-import domin.ConstantField;
+import ConstField.SharedInfo;
 import domin.KafkaDataStruct;
+import net.sf.json.JSONObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import service.dataService.DataService;
-import service.storageQueryUpdateService.StoreQueryUpdateService;
-import service.userService.UserService;
+import service.UdpTrapService.UdpTrapService;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.Properties;
 
 @Service
 public class MyKafkaConsumer implements InitializingBean {
@@ -49,13 +49,7 @@ public class MyKafkaConsumer implements InitializingBean {
     private int minBatchSize;
 
     @Resource
-    private UserService userService;
-
-    @Resource
-    private DataService dataService;
-
-    @Resource
-    private StoreQueryUpdateService storeQueryUpdateService;
+    private UdpTrapService udpTrapService;
 
     @Override
     public void afterPropertiesSet() {
@@ -69,8 +63,6 @@ public class MyKafkaConsumer implements InitializingBean {
             KafkaConsumer<String, Object> consumer = createConsumer();
 
             consumer.subscribe(Collections.singletonList(topic));
-
-            int count = 0;
 
             while (true) {
                 ConsumerRecords<String, Object> records = consumer.poll(pollTimeout);
@@ -87,24 +79,20 @@ public class MyKafkaConsumer implements InitializingBean {
 //                            System.out.print(Integer.toHexString(data[i] & 0xFF) + " ");
 //                        }
 
-                        if(data[0] == ConstantField.USER_SIGNAL) {
-                            userService.dealUserData(kafkaDataStruct);
-                        } else if(data[0] == ConstantField.DATA_SIGNAL) {
-                            dataService.dealData(kafkaDataStruct);
-                        } else if(data[0] == ConstantField.STORE_QUERY_UPDATE_SIGNAL) {
-                            storeQueryUpdateService.dealStoreQueryUpdate(kafkaDataStruct);
-                        }
+                        String str = new String(data, 0, kafkaDataStruct.getLen()).trim();
 
-                        count ++;
+                        if (SharedInfo.PRINT) {
+                            System.out.println("recv udp : " + str);
+                        }
+                        JSONObject jsonObj = JSONObject.fromObject(str);
+
+                        udpTrapService.processTrap(jsonObj, kafkaDataStruct.getIp(), kafkaDataStruct.getPort());
+
+                        System.out.println("now commit offset");
+                        consumer.commitSync();
                     }
 
                     System.out.println("consumer message values is " + record.value() + " and the offset is " + record.offset());
-                }
-
-                if (count >= minBatchSize) {
-                    System.out.println("now commit offset" + count);
-                    consumer.commitSync();
-                    count = 0;
                 }
             }
         }
