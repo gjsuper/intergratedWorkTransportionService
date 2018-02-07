@@ -40,6 +40,7 @@ public class TransportationService implements InitializingBean {
         this.port = port;
     }
 
+    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void afterPropertiesSet() throws Exception {
 //        String str = "hello111";
