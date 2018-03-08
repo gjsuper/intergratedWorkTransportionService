@@ -1,12 +1,11 @@
 package service.UdpTrapService;
 
 import ConstField.JsonString;
-import ConstField.SharedInfo;
 import DataStruct.Department;
 import DataStruct.User;
-import org.springframework.stereotype.Service;
-
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Service;
+import service.redisService.RedisClusterUtils;
 import service.transportationService.UdpInterface;
 import sqlMapper.DepartmentMapper;
 import sqlMapper.UserMapper;
@@ -28,6 +27,9 @@ public class LoginService {
 	@Resource
 	private UdpInterface udpInterface;
 
+	@Resource
+	private RedisClusterUtils redisClusterUtils;
+
 	public void process(JSONObject jsonObj, String dst_ip, int port) {
 		String name = jsonObj.getString(JsonString.USR_NAME);
 		String password = jsonObj.getString(JsonString.PASSWORD);
@@ -46,14 +48,23 @@ public class LoginService {
 //				if(mySQLService.executeUpdate("update usr setObject status = 1,ip = ? where name = ?", dst_ip, name) < 1)
 //					System.err.println("update usr status, ip error!");
 
-				if(userMapper.setLoginInfo(name, dst_ip) < 1) {
+				if(userMapper.setLoginInfo(name, dst_ip, port) < 1) {
 					System.err.println("update usr status, ip error!");
 				}
 
 				result = JsonString.SUCCESS;
 				id = user.getId();
-				SharedInfo.map.get(id).setStatus(1);
-				SharedInfo.map.get(id).setIp(dst_ip);
+
+				user.setStatus(1);
+				user.setIp(dst_ip);
+				user.setPort(port);
+
+//				SharedInfo.map.get(id).setStatus(1);
+//				SharedInfo.map.get(id).setIp(dst_ip);
+
+				redisClusterUtils.setObject(user.getName(), user);
+				redisClusterUtils.setObject("" + user.getId(), user);
+
 			} else {
 				result = JsonString.PASSWORD_WRONG;
 			}

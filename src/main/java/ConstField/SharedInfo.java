@@ -1,15 +1,12 @@
 package ConstField;
 
-import DataStruct.User;
 import UI.DepartmentItem;
 import UI.UserItem;
 import org.springframework.context.ApplicationContext;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SharedInfo {
 	public static final int WIDTH = 850;
@@ -17,7 +14,7 @@ public class SharedInfo {
 	
 	public static final boolean PRINT = true;
 	
-	public static Map<Integer, User> map = new HashMap<>();
+//	public static Map<Integer, User> map = new HashMap<>();
 
 	public static int MAX_ITEM_PER_PAGE = 8;
 	

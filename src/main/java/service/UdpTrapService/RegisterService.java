@@ -1,10 +1,10 @@
 package service.UdpTrapService;
 
 import ConstField.JsonString;
-import ConstField.SharedInfo;
 import DataStruct.User;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
+import service.dataFetchService.CacheService;
 import service.transportationService.UdpInterface;
 import sqlMapper.UserMapper;
 
@@ -19,6 +19,9 @@ public class RegisterService {
 
 	@Resource
 	private UdpInterface udpInterface;
+
+	@Resource
+	private CacheService cacheService;
 
 	public void process(JSONObject jsonObj, String dst_ip, int port) {
 		String name = jsonObj.getString(JsonString.USR_NAME);
@@ -45,12 +48,14 @@ public class RegisterService {
 			u.setPassword(password);
 			u.setDepartment(department);
 			u.setIp(ip);
+			u.setPort(port);
+			u.setStatus(0);
 
 			userMapper.addUser(u);
 
 			id = u.getId();
-
-			SharedInfo.map.put(id, new User(id, name, password, army, department, dst_ip, 0));
+			cacheService.setUserById(id, u);
+			cacheService.setUserByName(name, u);
 
 		} 
 

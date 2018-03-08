@@ -12,12 +12,15 @@ public interface UserMapper {
     @Select("select * from user where name = #{name}")
     User getUserByUsername(@Param("name") String name);
 
+    @Select("select * from user where id = #{id}")
+    User getUserById(int id);
+
     @Options(useGeneratedKeys = true)
     @Insert("insert into user(name, password, army, department, ip) values (#{name}, #{password}, #{army}, #{department}, #{ip})")
     void addUser(User user);
 
-    @Update("update user setObject status = 1, ip = #{ip} where name = #{name}")
-    int setLoginInfo(@Param("name") String name, @Param("ip") String ip);
+    @Update("update user setObject status = 1, ip = #{ip} where name = #{name}, port = #{port}")
+    int setLoginInfo(@Param("name") String name, @Param("ip") String ip, @Param("port") int port);
 
     @Update("update user setObject status = 0 where id = #{id}")
     int setLogoutInfo(@Param("name") String id);
@@ -39,5 +42,8 @@ public interface UserMapper {
 
     @Select("select * from user")
     List<User> getAllUsers();
+
+    @Select("select ip, port from user where status = 1")
+    List<User> getOnlineUsers();
 
 }

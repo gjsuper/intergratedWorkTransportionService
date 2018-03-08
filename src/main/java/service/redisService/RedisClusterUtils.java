@@ -7,7 +7,6 @@ import redis.clients.jedis.JedisCluster;
 import service.serializeService.SerializeUtil;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Component
 public class RedisClusterUtils implements InitializingBean {
@@ -47,9 +46,9 @@ public class RedisClusterUtils implements InitializingBean {
      * @param key
      * @param list
      */
-    public void setObject(String key, List<String> list){
-        jedisCluster.rpush(key, (String[]) list.toArray());
-    }
+//    public void setObject(String key, List<String> list){
+//        jedisCluster.rpush(key, (String[]) list.toArray());
+//    }
 
 
     /**

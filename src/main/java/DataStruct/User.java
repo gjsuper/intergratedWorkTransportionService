@@ -1,10 +1,11 @@
 package DataStruct;
 
-import com.google.common.base.MoreObjects;
-
 import java.io.Serializable;
 
 public class User implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	private int id = 0;
 	private String name = null;
 	private String password = null;
@@ -116,9 +117,9 @@ public class User implements Serializable{
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("id", id).
-				add("name", name).add("password", password).
-				add("army", army).add("department", department).
-				add("ip", ip).add("status",status).add("port", port).toString();
+		return "[id:" +  id +
+				",name:" +  name +  ",password:" +  password +
+				",army:" +  army + ", department:" + department +
+				",ip:" +  ip + ",status:" + status + ",port:"+ port + "]";
 	}
 }

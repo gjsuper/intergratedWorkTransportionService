@@ -3,6 +3,7 @@ package DataStruct;
 import java.sql.Timestamp;
 
 public class Message {
+
 	private int src_id;
 	private int id;
 	private int dst_id;

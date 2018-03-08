@@ -5,11 +5,12 @@
 
 <mapper namespace="sqlMapper.DepartmentMapper">
     <delete id="deleteDepartmentById">
-        delete from department <where>
-        id IN
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
-            #{id}
-        </foreach>
-    </where>
+        delete from department
+        <where>
+            id IN
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </where>
     </delete>
 </mapper>

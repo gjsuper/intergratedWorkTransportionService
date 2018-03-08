@@ -1,12 +1,11 @@
 package service.UdpTrapService;
 
 import ConstField.JsonString;
-import ConstField.SharedInfo;
 import DataStruct.Message;
 import DataStruct.User;
-import org.springframework.stereotype.Service;
-
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Service;
+import service.dataFetchService.CacheService;
 import service.transportationService.UdpInterface;
 import sqlMapper.MessageMapper;
 
@@ -21,6 +20,9 @@ public class SMService {
 
 	@Resource
 	private UdpInterface udpInterface;
+
+	@Resource
+	private CacheService cacheService;
 
 	public void process(JSONObject jsonObject, String ip, int port) {
 		int messageIndex = jsonObject.getInt(JsonString.MESSAGE_INDEX);
@@ -61,9 +63,10 @@ public class SMService {
 	private String getIpIfOnLine(int dst_id) {
 		String ip = null;
 		
-		User usr = SharedInfo.map.get(dst_id);
+//		User usr = SharedInfo.map.get(dst_id);
+		User usr = cacheService.getUserById(dst_id);
 		if(usr != null && usr.getStatus() == 1) {
-			ip = SharedInfo.map.get(dst_id).getIp();
+			ip = usr.getIp();
 		}
 		
 		return ip;

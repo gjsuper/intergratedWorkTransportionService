@@ -2,10 +2,10 @@ package service.UdpTrapService;
 
 
 import ConstField.JsonString;
-import ConstField.SharedInfo;
-import org.springframework.stereotype.Service;
-
+import DataStruct.User;
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Service;
+import service.dataFetchService.CacheService;
 import service.transportationService.UdpInterface;
 import sqlMapper.UserMapper;
 
@@ -20,6 +20,9 @@ public class LogoutService {
 
 	@Resource
 	UdpInterface udpInterface;
+
+	@Resource
+	private CacheService cacheService;
 
 	public void process(JSONObject jsonObject, String ip, int port) {
 		String id = jsonObject.getString(JsonString.USR_ID);
@@ -37,6 +40,10 @@ public class LogoutService {
 
 		udpInterface.sendData(response.toString().getBytes(), ip, port);
 		
-		SharedInfo.map.get(id).setStatus(0);
+//		SharedInfo.map.get(id).setStatus(0);
+
+		User user = cacheService.getUserById(Integer.valueOf(id));
+
+		cacheService.setUserById(Integer.valueOf(id), user);
 	}
 }

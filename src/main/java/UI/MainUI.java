@@ -5,6 +5,7 @@ import DataStruct.Department;
 import DataStruct.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
+import service.redisService.RedisClusterUtils;
 import sqlMapper.DepartmentMapper;
 import sqlMapper.UserMapper;
 
@@ -54,6 +55,9 @@ public class MainUI extends JFrame implements InitializingBean{
 	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@Resource
 	private DepartmentMapper departmentMapper;
+
+	@Resource
+	private RedisClusterUtils redisClusterUtils;
 
 	private CardLayout card = new CardLayout();
 
@@ -286,7 +290,9 @@ public class MainUI extends JFrame implements InitializingBean{
 		List<User> users = userMapper.getAllUsers();
 
 		for(User user : users) {
-			SharedInfo.map.put(user.getId(), user);
+//			SharedInfo.map.put(user.getId(), user);
+			redisClusterUtils.setObject("" + user.getId(), user);
+			redisClusterUtils.setObject(user.getName(), user);
 		}
 
 		loadDepartment("海军");
