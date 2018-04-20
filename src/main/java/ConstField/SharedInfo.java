@@ -12,7 +12,7 @@ public class SharedInfo {
 	public static final int WIDTH = 850;
 	public static final int HEIGHT = 600;
 	
-	public static final boolean PRINT = true;
+	public static final boolean PRINT = false;
 	
 //	public static Map<Integer, User> map = new HashMap<>();
 

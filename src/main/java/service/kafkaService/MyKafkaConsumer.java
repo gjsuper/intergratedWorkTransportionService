@@ -64,8 +64,13 @@ public class MyKafkaConsumer implements InitializingBean {
 
             consumer.subscribe(Collections.singletonList(topic));
 
+            System.out.println("start to consume kafka message......");
+
             while (true) {
+//                System.out.println("start to consume kafka message1......");
+
                 ConsumerRecords<String, Object> records = consumer.poll(pollTimeout);
+//                System.out.println("start to consume kafka message2......");
 
                 for (ConsumerRecord<String, Object> record : records) {
 
@@ -93,6 +98,7 @@ public class MyKafkaConsumer implements InitializingBean {
                     }
 
                     System.out.println("consumer message values is " + record.value() + " and the offset is " + record.offset());
+
                 }
             }
         }
@@ -108,6 +114,7 @@ public class MyKafkaConsumer implements InitializingBean {
         props.put("session.timeout.ms", sessionTimeout);
         props.put("key.deserializer", keyDeserializer);
         props.put("value.deserializer", valueDeserializer);
+        props.put("auto.offset.reset", "earliest");
 
         return new KafkaConsumer<>(props);
     }

@@ -9,6 +9,7 @@ import sqlMapper.DepartmentMapper;
 import sqlMapper.UserMapper;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class CacheService implements InitializingBean {
@@ -100,19 +101,30 @@ public class CacheService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        User user = new User();
-
-//        user.setUsername("jie3");
-//        user.setPassword("123456");
-//        user.setExtendInfo("extend info");
-////h
-////      redisClusterUtils.setObject("jie", user);
+//        User user = new User();
 //
-//        userMapper.addUser(user);
-//        System.out.println(user.getId());
-        System.out.println("get user by name:" + getUserByName("jie"));
-        System.out.println("get user by id:" + getUserById(1));
+////        user.setUsername("jie3");
+////        user.setPassword("123456");
+////        user.setExtendInfo("extend info");
+//////h
+//////      redisClusterUtils.setObject("jie", user);
+////
+////        userMapper.addUser(user);
+////        System.out.println(user.getId());
+
+//        System.out.println("get user by name:" + getUserByName("jie"));
+//        System.out.println("get user by id:" + getUserById(1));
 
 //        redisClusterUtils.setObject("kk");
+
+
+        System.out.println("start init redis************");
+        List<User> users = userMapper.getAllUsers();
+
+        for(User user : users) {
+//			SharedInfo.map.put(user.getId(), user);
+            redisClusterUtils.setObject("" + user.getId(), user);
+            redisClusterUtils.setObject(user.getName(), user);
+        }
     }
 }

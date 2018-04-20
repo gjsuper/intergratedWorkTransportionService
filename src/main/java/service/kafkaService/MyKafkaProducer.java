@@ -67,5 +67,7 @@ public class MyKafkaProducer implements InitializingBean {
         }
 
         producer.send(record);
+
+        System.out.println("send to kafka finsh.....");
     }
 }

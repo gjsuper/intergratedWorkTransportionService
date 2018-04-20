@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface MessageMapper {
 
-    @Insert("insert into message(src_id, dst_id, data) values(?,?,?)")
+    @Insert("insert into message(src_id, dst_id, data) values(#{src_id}, #{dst_id}, #{data})")
     void addMessage(Message message);
 
     @Select("select * from message where dst_id = #{dst_id} and id > #{id}")
     List<Message> getMessagesById(@Param("dst_id") int dst_id, @Param("id") int id);
 
-    @Select("sselect *, data from message where dst_id = ? and time > ?")
+    @Select("select * from message where dst_id = ? and time > ?")
     List<Message> getMessagesByTime(@Param("dst_id") int id, @Param("time")Timestamp timestamp);
 
 }

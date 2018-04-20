@@ -18,6 +18,10 @@ public class UdpTrapService {
 
 	public void processTrap(JSONObject jsonObj, String ip, int port) {
 
+		if(!jsonObj.containsKey(JsonString.PACKET_TYPE)) {
+			return;
+		}
+
 		if(jsonObj.getString(JsonString.PACKET_TYPE).equals(JsonString.REGISTER_REQUEST)) {
 			udpTrapServiceFactory.getRegisterService().process(jsonObj, ip, port);
 		} else if(jsonObj.getString(JsonString.PACKET_TYPE).equals(JsonString.LOGIN_REQUEST)) {

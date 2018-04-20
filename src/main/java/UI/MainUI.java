@@ -2,7 +2,6 @@ package UI;
 
 import ConstField.SharedInfo;
 import DataStruct.Department;
-import DataStruct.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import service.redisService.RedisClusterUtils;
@@ -287,13 +286,13 @@ public class MainUI extends JFrame implements InitializingBean{
 	private void init() {
 //		List<User> usrs = mySQLService.queryUsr("select * from user");
 
-		List<User> users = userMapper.getAllUsers();
-
-		for(User user : users) {
-//			SharedInfo.map.put(user.getId(), user);
-			redisClusterUtils.setObject("" + user.getId(), user);
-			redisClusterUtils.setObject(user.getName(), user);
-		}
+//		List<User> users = userMapper.getAllUsers();
+//
+//		for(User user : users) {
+////			SharedInfo.map.put(user.getId(), user);
+//			redisClusterUtils.setObject("" + user.getId(), user);
+//			redisClusterUtils.setObject(user.getName(), user);
+//		}
 
 		loadDepartment("海军");
 		loadDepartment("陆军");

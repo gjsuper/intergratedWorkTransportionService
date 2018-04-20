@@ -30,7 +30,9 @@ public class SMService {
 		int dst_id = jsonObject.getInt(JsonString.DST_ID);
 		String data = jsonObject.getString(JsonString.MESSAGE);
 
-		String dst_ip;
+
+
+		System.out.println("recv a message:src_id:" + src_id + ",dst_id:" + dst_id + ",message:" + data);
 
 		Message message = new Message();
 		message.setSrc_id(src_id);
@@ -39,10 +41,11 @@ public class SMService {
 
 		messageMapper.addMessage(message);
 
-		if((dst_ip = getIpIfOnLine(dst_id)) != null) {
+		User user;
+		if((user = getUserIfOnLine(dst_id)) != null) {
 			jsonObject.put(JsonString.MESSAGE_INDEX, message.getId());
 
-			udpInterface.sendData(jsonObject.toString().getBytes(), dst_ip, port);
+			udpInterface.sendData(jsonObject.toString().getBytes(), user.getIp(), user.getPort());
 		}
 
 		//���ض���Ϣȷ��
@@ -60,15 +63,12 @@ public class SMService {
 	 * @param dst_id Ŀ��id
 	 * @return Ŀ��ip
 	 */
-	private String getIpIfOnLine(int dst_id) {
-		String ip = null;
-		
-//		User usr = SharedInfo.map.get(dst_id);
+	private User getUserIfOnLine(int dst_id) {
 		User usr = cacheService.getUserById(dst_id);
 		if(usr != null && usr.getStatus() == 1) {
-			ip = usr.getIp();
+			return usr;
 		}
 		
-		return ip;
+		return null;
 	}
 }

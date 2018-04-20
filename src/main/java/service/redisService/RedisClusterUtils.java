@@ -1,7 +1,6 @@
 package service.redisService;
 
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisCluster;
 import service.serializeService.SerializeUtil;
@@ -9,7 +8,7 @@ import service.serializeService.SerializeUtil;
 import javax.annotation.Resource;
 
 @Component
-public class RedisClusterUtils implements InitializingBean {
+public class RedisClusterUtils {
 
     @Resource
     private JedisCluster jedisCluster;
@@ -84,10 +83,5 @@ public class RedisClusterUtils implements InitializingBean {
      */
     public void del(String key){
         jedisCluster.del(key);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("redis getBytes:" + jedisCluster.get("f") + "," + jedisCluster.getClusterNodes());
     }
 }

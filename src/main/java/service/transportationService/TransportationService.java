@@ -49,13 +49,15 @@ public class TransportationService implements InitializingBean {
 
         new Thread(() -> {
             while (true) {
-
+                System.out.println("*************start to recv data*************");
                 DatagramPacket dp = udpInterface.recv();
 
                 if(dp == null) {
                     System.err.println("received datagram Packet == null");
                     continue;
                 }
+
+                System.out.println("recv something...");
 
                 myKafkaProducer.sendMessage(new KafkaDataStruct(dp.getData(), dp.getLength(), dp.getAddress().getHostAddress(), dp.getPort()));
 
@@ -65,7 +67,7 @@ public class TransportationService implements InitializingBean {
 //                System.out.print(Integer.toHexString(recvBuf[i] & 0xFF) + " ");
 //            }
             }
-        });
+        }).start();
 
     }
 }
